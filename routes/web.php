@@ -20,17 +20,33 @@ Route::get('/', function () {
 
 */
 
-Route::get('/','PrincipalController@principal');
-Route::get('/sobre-nos','SobreNosController@sobreNos');
-Route::get('/contato','ContatoController@contato'); // nome, categoria, assunto, mensagem
-Route::get('/login', function(){return 'login';});
+Route::get('/','PrincipalController@principal')->name('site.index');
+Route::get('/sobre-nos','SobreNosController@sobreNos')->name('site.sobrenos');
+Route::get('/contato','ContatoController@contato')->name('site.contato'); // nome, categoria, assunto, mensagem
+Route::get('/login', function(){return 'login';})->name('site.login');
 
 
 Route::prefix('/app')->group(function(){
-    Route::get('/clientes',function(){return 'cliente';});
-    Route::get('/fornecedores',function(){return 'fornecedores';});
-    Route::get('/produtos',function(){return 'produtos';});
+    Route::get('/clientes',function(){return 'cliente';})->name('app.clientes');
+    Route::get('/fornecedores','FornecedorController@index')->name('app.fornecedores');
+    Route::get('/produtos',function(){return 'produtos';})->name('site.produtos');
 });
+
+
+Route::get('/teste/{p1}/{p2}','TesteController@teste')->name('site.teste');
+
+
+Route::fallback(function(){
+    echo 'A rota não existe <a href="'.route('site.index').'">Volte para a página principal</a>';
+});
+
+
+// Outros exemplos
+
+/*
+Route::redirect('/rota1','/rota2');
+*/
+
 
 /*
 Route::get('/contato/{nome}/{categoria_id}', 
